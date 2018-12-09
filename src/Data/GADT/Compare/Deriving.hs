@@ -88,7 +88,11 @@ makeGCompare name = do
       body = case unsnoc fieldVars of
         Nothing -> [| GEQ |]
         Just (fieldVars', (lv1, lv2)) -> do
-          let comp = foldr (\(v1, v2) e -> [| compare $(varE v1) $(varE v2) <> $e |]) [| compare $(varE lv1) $(varE lv2) |] fieldVars'
+          let
+            comp = foldr
+              (\(v1, v2) e -> [| compare $(varE v1) $(varE v2) <> $e |])
+              [| compare $(varE lv1) $(varE lv2) |]
+              fieldVars'
           [| case $comp of
             LT -> GLT
             EQ -> GEQ
